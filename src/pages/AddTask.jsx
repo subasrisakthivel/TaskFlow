@@ -2,23 +2,29 @@ import {useState} from "react";
 
 
 
-function AddTask() {
+function AddTask({setTasks}) {
     const [title,setTitle] = useState("");
     const [description,setDescription] = useState("");
     const [priority,setPriority] = useState("");
     const [dueDate,setDueDate] = useState("");
 
 
+
     const handleSubmit =(e)=>{
         e.preventDefault();
+
         const task = {
             title,
             description,
             priority,
-            duedate
+            dueDate
         };
+
+        setTasks((prevTasks)=>[
+          ...prevTasks,task
+        ]);
         console.log(task);
-    }
+    };
 
 
 
