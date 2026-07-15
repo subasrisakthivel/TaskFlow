@@ -1,5 +1,5 @@
 import TaskCard from "./TaskCard";
-function TaskList({tasks,deleteTask }) {
+function TaskList({tasks,deleteTask,completeTask }) {
   return (
     <div className="grid gap-5">
       {
@@ -8,6 +8,7 @@ function TaskList({tasks,deleteTask }) {
         key={task.title}
         task={task}
         deleteTask={deleteTask}
+        completeTask={completeTask}
         />
       ))
       }

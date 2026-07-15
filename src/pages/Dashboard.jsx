@@ -1,21 +1,23 @@
 import DashboardCard from "../components/DashboardCard";
-import {Link} from "react-router-dom"
-const taskStats = [
+import TaskList from "../components/TaskList";
+import {Link} from "react-router-dom";
+
+
+function Dashboard({totalTasks,completedTasks,pendingTasks,tasks,deleteTask,completeTask}) {
+  const taskStats = [
   {
     title: "Total Task",
-    count: 0,
+    count: totalTasks,
   },
   {
     title: "Completed",
-    count: 0,
+    count: completedTasks,
   },
   {
     title: "Pending",
-    count: 0,
+    count: pendingTasks,
   },
 ];
-
-function Dashboard() {
   return (
     <section className="min-h-screen bg-gray-100 p-10">
       <div>
@@ -41,6 +43,11 @@ function Dashboard() {
                 + Add Task
                 </Link> 
         </div>
+        <TaskList
+  tasks={tasks}
+  deleteTask={deleteTask}
+  completeTask={completeTask}
+/>
       </div>
     </section>
   );

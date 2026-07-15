@@ -1,4 +1,5 @@
 import {useState} from "react";
+import { useNavigate } from "react-router-dom";
 
 
 
@@ -9,21 +10,26 @@ function AddTask({setTasks}) {
     const [dueDate,setDueDate] = useState("");
 
 
+    const navigate = useNavigate();
+
+
 
     const handleSubmit =(e)=>{
         e.preventDefault();
 
-        const task = {
+        const newTask = {
             title,
             description,
             priority,
-            dueDate
+            dueDate,
+            completed:false,
         };
 
         setTasks((prevTasks)=>[
-          ...prevTasks,task
+          ...prevTasks,newTask
         ]);
-        console.log(task);
+        navigate("/dashboard");
+        console.log(newTask);
     };
 
 
