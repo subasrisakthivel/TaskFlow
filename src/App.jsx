@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import "./App.css";
 import Landing from "./pages/Landing";
 import Navbar from "./components/Navbar";
@@ -8,9 +8,17 @@ import Dashboard from "./pages/Dashboard";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import AddTask from "./pages/AddTask";
 
-
 function App() {
-  const [tasks, setTasks] = useState([]);
+  const [tasks, setTasks] = useState(() => {
+    const savedTasks = localStorage.getItem("tasks");
+
+    return savedTasks ? JSON.parse(savedTasks) : [];
+  });
+
+  useEffect(() => {
+    localStorage.setItem("tasks", JSON.stringify(tasks));
+  }, [tasks]);
+
   const totalTasks = tasks.length;
   const completedTasks = tasks.filter((task) => task.completed).length;
   const pendingTasks = tasks.filter((task) => !task.completed).length;
@@ -21,9 +29,23 @@ function App() {
 
   const [search, setSearch] = useState("");
   const filteredTasks = tasks.filter((task) =>
-    task.title.toLowerCase().includes(search.toLowerCase())
+    task.title.toLowerCase().includes(search.toLowerCase()),
   );
 
+  const [statusFilter, setStatusFilter] = useState("all");
+  const statusFilteredTasks = filteredTasks.filter((task) => {
+    if (statusFilter === "all") {
+      return true;
+    }
+
+    if (statusFilter === "completed") {
+      return task.completed;
+    }
+
+    if (statusFilter === "pending") {
+      return !task.completed;
+    }
+  });
 
   const completeTask = (title) => {
     const markedTasks = tasks.map((newTask) => {
@@ -43,36 +65,30 @@ function App() {
     <BrowserRouter>
       <Navbar />
       <Routes>
-        <Route 
-        path="/" 
-        element={<Landing />}
-         />
+        <Route path="/" element={<Landing />} />
 
-        <Route 
-        path="/login" 
-        element={<Login />} 
-        />
+        <Route path="/login" element={<Login />} />
 
-        <Route 
-        path="/dashboard" 
-        element={<Dashboard 
-        totalTasks={totalTasks}
-        completedTasks={completedTasks}
-        pendingTasks={pendingTasks}
-        tasks={filteredTasks}
-        deleteTask={deleteTask}
-        completeTask={completeTask}
-        search={search}
-        setSearch={setSearch}/>} 
+        <Route
+          path="/dashboard"
+          element={
+            <Dashboard
+              totalTasks={totalTasks}
+              completedTasks={completedTasks}
+              pendingTasks={pendingTasks}
+              tasks={statusFilteredTasks}
+              deleteTask={deleteTask}
+              completeTask={completeTask}
+              search={search}
+              setSearch={setSearch}
+              statusFilter={statusFilter}
+              setStatusFilter={setStatusFilter}
+            />
+          }
         />
-        <Route 
-        path="/addtask" 
-        element={<AddTask 
-        setTasks={setTasks} />} 
-        />
+        <Route path="/addtask" element={<AddTask setTasks={setTasks} />} />
       </Routes>
 
-      
       <Footer />
     </BrowserRouter>
   );

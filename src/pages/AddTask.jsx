@@ -3,12 +3,12 @@ import { useNavigate } from "react-router-dom";
 
 
 
-function AddTask({setTasks}) {
+function AddTask({setTasks,editingTask}) {
     const [title,setTitle] = useState("");
     const [description,setDescription] = useState("");
     const [priority,setPriority] = useState("");
     const [dueDate,setDueDate] = useState("");
-
+    
 
     const navigate = useNavigate();
 

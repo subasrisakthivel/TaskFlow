@@ -3,7 +3,19 @@ import TaskList from "../components/TaskList";
 import {Link} from "react-router-dom";
 
 
-function Dashboard({totalTasks,completedTasks,pendingTasks,tasks,deleteTask,completeTask, search, setSearch,}) {
+function Dashboard(
+  {
+    totalTasks,
+    completedTasks,
+    pendingTasks,
+    tasks,
+    deleteTask,
+    completeTask, 
+    search, 
+    setSearch,
+    statusFilter,
+    setStatusFilter,
+  }) {
   const taskStats = [
   {
     title: "Total Task",
@@ -44,12 +56,48 @@ function Dashboard({totalTasks,completedTasks,pendingTasks,tasks,deleteTask,comp
   onChange={(e) => setSearch(e.target.value)}
   className="border rounded-xl p-3 w-full max-w-md "
 />
+<div className="flex justify-center gap-4 mt-6">
+  <button
+    onClick={() => setStatusFilter("all")}
+    className={`text-white px-4 py-2 rounded-xl ${
+      statusFilter === "all"
+      ? "bg-blue-700"
+      : "bg-gray-400 hover:bg-gray-500"
+    }`}
+  >
+    All
+  </button>
+
+  <button
+    onClick={() => setStatusFilter("completed")}
+    className={`px-4 py-2 rounded-xl text-white ${
+  statusFilter === "completed"
+    ? "bg-green-600"
+    : "bg-gray-400 hover:bg-gray-500"
+}`}
+  >
+    Completed
+  </button>
+
+  <button
+    onClick={() => setStatusFilter("pending")}
+    className={`px-4 py-2 rounded-xl text-white ${
+  statusFilter === "pending"
+    ? "bg-yellow-500"
+    : "bg-gray-400 hover:bg-gray-500"
+}`}
+  >
+    Pending
+  </button>
+</div>
+{/*  */}
             <Link 
             to="/addtask"
             className="bg-blue-700 text-white px-5 py-3 rounded-2xl hover:bg-blue-900">
                 + Add Task
                 </Link> 
         </div>
+        
         <TaskList
   tasks={tasks}
   deleteTask={deleteTask}

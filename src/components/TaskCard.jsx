@@ -1,4 +1,6 @@
-function TaskCard({ task, deleteTask, completeTask}) {
+import { useNavigate } from "react-router-dom";
+
+function TaskCard({ task, deleteTask, completeTask }) {
   return (
     <div className="bg-white shadow-lg rounded-2xl p-6">
       <h2 className="text-xl font-bold text-gray-800">{task.title}</h2>
@@ -11,17 +13,18 @@ function TaskCard({ task, deleteTask, completeTask}) {
           <span className="font-bold">Due Date:</span> {task.dueDate}
         </p>
       </div>
+
       <button
-  onClick={() => completeTask(task.title)}
-  disabled={task.completed}
-  className={`px-4 py-2 rounded-xl text-white ${
-    task.completed
-      ? "bg-gray-400 cursor-not-allowed"
-      : "bg-green-600 hover:bg-green-700"
-  }`}
->
-  {task.completed ? "Completed ✅" : "Mark Complete"}
-</button>
+        onClick={() => completeTask(task.title)}
+        disabled={task.completed}
+        className={`px-4 py-2 rounded-xl text-white ${
+          task.completed
+            ? "bg-gray-400 cursor-not-allowed"
+            : "bg-green-600 hover:bg-green-700"
+        }`}
+      >
+        {task.completed ? "Completed ✅" : "Mark Complete"}
+      </button>
       <button
         onClick={() => deleteTask(task.title)}
         className="mt-4 bg-red-600 text-white px-4 py-2 rounded-xl"
