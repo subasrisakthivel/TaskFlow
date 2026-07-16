@@ -3,7 +3,7 @@ import TaskList from "../components/TaskList";
 import {Link} from "react-router-dom";
 
 
-function Dashboard({totalTasks,completedTasks,pendingTasks,tasks,deleteTask,completeTask}) {
+function Dashboard({totalTasks,completedTasks,pendingTasks,tasks,deleteTask,completeTask, search, setSearch,}) {
   const taskStats = [
   {
     title: "Total Task",
@@ -37,6 +37,13 @@ function Dashboard({totalTasks,completedTasks,pendingTasks,tasks,deleteTask,comp
           })}
         </div>
         <div className="flex justify-center mt-10">
+          <input
+  type="text"
+  placeholder=" 🔍 Search tasks..."
+  value={search}
+  onChange={(e) => setSearch(e.target.value)}
+  className="border rounded-xl p-3 w-full max-w-md "
+/>
             <Link 
             to="/addtask"
             className="bg-blue-700 text-white px-5 py-3 rounded-2xl hover:bg-blue-900">

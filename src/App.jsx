@@ -11,17 +11,19 @@ import AddTask from "./pages/AddTask";
 
 function App() {
   const [tasks, setTasks] = useState([]);
-
   const totalTasks = tasks.length;
-
   const completedTasks = tasks.filter((task) => task.completed).length;
-
   const pendingTasks = tasks.filter((task) => !task.completed).length;
-
   const deleteTask = (title) => {
     const updatedTasks = tasks.filter((newTask) => newTask.title !== title);
     setTasks(updatedTasks);
   };
+
+  const [search, setSearch] = useState("");
+  const filteredTasks = tasks.filter((task) =>
+    task.title.toLowerCase().includes(search.toLowerCase())
+  );
+
 
   const completeTask = (title) => {
     const markedTasks = tasks.map((newTask) => {
@@ -57,9 +59,11 @@ function App() {
         totalTasks={totalTasks}
         completedTasks={completedTasks}
         pendingTasks={pendingTasks}
-        tasks={tasks}
+        tasks={filteredTasks}
         deleteTask={deleteTask}
-        completeTask={completeTask}/>} 
+        completeTask={completeTask}
+        search={search}
+        setSearch={setSearch}/>} 
         />
         <Route 
         path="/addtask" 
