@@ -1,6 +1,7 @@
 import { useNavigate } from "react-router-dom";
 
-function TaskCard({ task, deleteTask, completeTask }) {
+function TaskCard({ task, deleteTask, completeTask ,setEditingTask}) {
+  const navigate = useNavigate();
   return (
     <div className="bg-white shadow-lg rounded-2xl p-6">
       <h2 className="text-xl font-bold text-gray-800">{task.title}</h2>
@@ -35,6 +36,16 @@ function TaskCard({ task, deleteTask, completeTask }) {
         Status:
         {task.completed ? "Completed" : "Pending"}
       </p>
+      <button
+  onClick={() => {
+   
+   setEditingTask(task);
+    navigate("/addtask");
+  }}
+  className="bg-blue-600 text-white px-4 py-2 rounded-xl mr-2"
+>
+  ✏️ Edit
+</button>
     </div>
   );
 }

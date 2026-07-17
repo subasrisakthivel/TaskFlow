@@ -1,6 +1,6 @@
 import TaskCard from "./TaskCard";
 
-function TaskList({ tasks, deleteTask, completeTask }) {
+function TaskList({ tasks, deleteTask, completeTask,setEditingTask }) {
   if (tasks.length === 0) {
     return (
       <h2 className="text-center text-gray-500 mt-10 text-xl">
@@ -17,6 +17,7 @@ function TaskList({ tasks, deleteTask, completeTask }) {
           task={task}
           deleteTask={deleteTask}
           completeTask={completeTask}
+          setEditingTask={setEditingTask}
         />
       ))}
     </div>

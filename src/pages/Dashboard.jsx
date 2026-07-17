@@ -15,6 +15,7 @@ function Dashboard(
     setSearch,
     statusFilter,
     setStatusFilter,
+    setEditingTask,
   }) {
   const taskStats = [
   {
@@ -90,18 +91,27 @@ function Dashboard(
     Pending
   </button>
 </div>
-{/*  */}
+<div className="flex justify-center gap-4 mt-8">
             <Link 
             to="/addtask"
             className="bg-blue-700 text-white px-5 py-3 rounded-2xl hover:bg-blue-900">
                 + Add Task
-                </Link> 
+                </Link>
+                <Link
+  to="/summary"
+  className="bg-green-700 text-white px-5 py-3 rounded-2xl hover:bg-green-900"
+>
+  📊 View Summary
+</Link>
+</div> 
         </div>
+         
         
         <TaskList
   tasks={tasks}
   deleteTask={deleteTask}
   completeTask={completeTask}
+  setEditingTask={setEditingTask}
 />
       </div>
     </section>
