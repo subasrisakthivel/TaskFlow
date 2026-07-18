@@ -50,15 +50,15 @@ npm run dev
 
 ### Dashboard
 
-(Add screenshot here)
+![Dashboard](./screenshots/dashboard.png)
 
 ### Add Task
 
-(Add screenshot here)
+![Add Task](./screenshots/addtask.png)
 
 ### Summary
 
-(Add screenshot here)
+![Summary](./screenshots/summary.png)
 
 ---
 
