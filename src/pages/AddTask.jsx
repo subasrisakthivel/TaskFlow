@@ -84,50 +84,50 @@ function AddTask({ tasks, setTasks, editingTask, setEditingTask }) {
   };
 
   return (
-    <section className="min-h-screen flex items-center justify-center bg-gray-100">
-      <div className="border rounded-3xl px-16 py-10 shadow-3xl bg-white">
-        <h1 className="text-2xl text-center font-bold text-gray-800">
+    <section className="min-h-screen flex items-center justify-center bg-gray-100 px-4 py-10">
+      <div className="w-full max-w-lg bg-white rounded-3xl shadow-xl p-6 md:p-10">
+        <h1 className="text-2xl md:text-3xl font-bold text-center text-gray-800">
           Add New Task
         </h1>
         <form onSubmit={handleSubmit} className="flex flex-col gap-4 py-6">
-          <label htmlFor="tasktitle">Task Title</label>
+          <label htmlFor="tasktitle" className="font-medium text-gray-700">Task Title</label>
           <input
             id="tasktitle"
             type="text"
             value={title}
             onChange={(e) => setTitle(e.target.value)}
-            className="border rounded-2xl p-2 w-full"
+            className="border rounded-xl p-3 w-full focus:outline-none focus:ring-2 focus:ring-blue-500"
           />
-          <label htmlFor="description">Description</label>
+          <label htmlFor="description" className="font-medium text-gray-700">Description</label>
           <input
             id="description"
             type="text"
             value={description}
             onChange={(e) => setDescription(e.target.value)}
-            className="border rounded-2xl p-2"
+            className="border rounded-xl p-3 w-full focus:outline-none focus:ring-2 focus:ring-blue-500"
           />
 
           <select
             value={priority}
             onChange={(e) => setPriority(e.target.value)}
-            className="border rounded-2xl p-2"
+            className="border rounded-xl p-3 w-full focus:outline-none focus:ring-2 focus:ring-blue-500"
           >
             <option value="">Select Priority</option>
             <option value="low">Low</option>
             <option value="medium">Medium</option>
             <option value="high">High</option>
           </select>
-          <label htmlFor="duedate">Due Date:</label>
+          <label htmlFor="duedate" className="font-medium text-gray-700">Due Date:</label>
           <input
             id="duedate"
             type="date"
             value={dueDate}
             onChange={(e) => setDueDate(e.target.value)}
-            className="border rounded-2xl"
+            className="border rounded-xl p-3 w-full focus:outline-none focus:ring-2 focus:ring-blue-500"
           />
           <button
             type="submit"
-            className="text-white border bg-blue-700 rounded-2xl  py-2 hover:bg-blue-950"
+            className="w-full bg-blue-700 text-white py-3 rounded-xl hover:bg-blue-900 transition"
           >
             {editingTask ? "Update Task" : "Add Task"}
           </button>
