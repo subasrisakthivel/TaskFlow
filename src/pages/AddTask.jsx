@@ -11,6 +11,7 @@ function AddTask({ tasks, setTasks, editingTask, setEditingTask }) {
 
   useEffect(() => {
     if (editingTask) {
+      console.log("Editing Task:",editingTask);
       setTitle(editingTask.title);
       setDescription(editingTask.description);
       setPriority(editingTask.priority);
@@ -18,70 +19,92 @@ function AddTask({ tasks, setTasks, editingTask, setEditingTask }) {
     }
   }, [editingTask]);
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
+ const handleSubmit = async (e) => {
+  e.preventDefault();
 
-    //validation
-    if (!title || !description || !priority || !dueDate) {
-      alert("Please fill all Fields");
-      return;
-    }
+  console.log("editingTask =", editingTask);
+console.log("editingTask id =", editingTask?._id);
+console.log("SUBMIT editingTask =", editingTask);
 
-    const newTask = {
-      title,
-      description,
-      priority,
-      dueDate,
-      completed: editingTask ? editingTask.completed : false,
-    };
+  if (!title || !description || !priority || !dueDate) {
+    alert("Please fill all Fields");
+    return;
+  }
 
-    //edit Mode
+  try {
+
+    // EDIT MODE
     if (editingTask) {
-      const alreadyExists = tasks.some(
-        (task) =>
-          task.title.toLowerCase() === title.toLowerCase() &&
-          task.title !== editingTask.title,
-      );
+      console.log("UPDATE BLOCK RUNNING");
 
-      if (alreadyExists) {
-        alert("Task title already exists");
-        return;
-      }
-
-      const updatedTasks = tasks.map((task) => {
-        if (task.title === editingTask.title) {
-          return newTask;
+      const response = await fetch(
+        `http://localhost:3000/api/tasks/${editingTask._id}`,
+        {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            title,
+            description,
+            priority,
+            dueDate,
+          }),
         }
-        return task;
-      });
-
-      setTasks(updatedTasks);
-    }
-
-    //Add mode
-    else {
-      const alreadyExists = tasks.some(
-        (task) => task.title.toLowerCase() === title.toLowerCase(),
       );
 
-      if (alreadyExists) {
-        alert("Task title already exists");
-        return;
-      }
+      const data = await response.json();
 
-      setTasks((prevTasks) => [...prevTasks, newTask]);
+      console.log(data);
+
+      alert("Task Updated Successfully");
+
     }
 
-    //clear Form
+    // ADD MODE
+    else {
+
+      const response = await fetch(
+        "http://localhost:3000/api/tasks",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            title,
+            description,
+            priority,
+            dueDate,
+          }),
+        }
+      );
+
+      const data = await response.json();
+
+      console.log(data);
+
+      alert("Task Added Successfully");
+    }
+
+    // Clear Form
+    
     setTitle("");
     setDescription("");
     setPriority("");
     setDueDate("");
-    //Exit edit mode
+
+    // Exit Edit Mode
     setEditingTask(null);
-    //NAvigate to Dashboard
+
+    // Go Dashboard
     navigate("/dashboard");
-  };
+
+  } catch (error) {
+    console.log(error);
+  }
+};
+
 
   return (
     <section className="min-h-screen flex items-center justify-center bg-gray-100 px-4 py-10">

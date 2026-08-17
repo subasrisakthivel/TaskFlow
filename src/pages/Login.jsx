@@ -15,18 +15,47 @@ const handlePassChange =(e)=>{
   setPassword(e.target.value)
 };
 
-const handleLogin = (e)=>{
+const handleLogin = async (e) => {
   e.preventDefault();
-  if(email.trim() && password.trim()){
-   navigate("/dashboard");
-}
-else{
-   alert("Please enter details😴");
-}
-  console.log(email);
-  console.log(password);
-  
-}
+
+  if (!email || !password) {
+    alert("Please enter details 😴");
+    return;
+  }
+
+  try {
+    const response = await fetch(
+      "http://localhost:3000/api/auth/login",
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          email,
+          password,
+        }),
+      }
+    );
+
+    const data = await response.json();
+
+    console.log(data);
+
+    if (response.ok) {
+      localStorage.setItem("token", data.token);
+
+      alert("Login Successful ✅");
+
+      navigate("/dashboard");
+    } else {
+      alert(data.message);
+    }
+
+  } catch (error) {
+    console.log(error);
+  }
+};
 
 
   return (

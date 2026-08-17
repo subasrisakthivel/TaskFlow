@@ -13,7 +13,7 @@ function TaskList({ tasks, deleteTask, completeTask,setEditingTask }) {
     <div className="grid gap-5">
       {tasks.map((task) => (
         <TaskCard
-          key={task.title}
+          key={task._id}
           task={task}
           deleteTask={deleteTask}
           completeTask={completeTask}

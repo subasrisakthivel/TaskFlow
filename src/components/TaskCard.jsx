@@ -16,26 +16,46 @@ function TaskCard({ task, deleteTask, completeTask ,setEditingTask}) {
       </div>
 
       <button
-        onClick={() => completeTask(task.title)}
-        disabled={task.completed}
+        onClick={() => completeTask(task._id)}
+        disabled={task.status ==="completed"}
         className={`px-4 py-2 rounded-xl text-white ${
-          task.completed
+          task.status ==="completed"
             ? "bg-gray-400 cursor-not-allowed"
             : "bg-green-600 hover:bg-green-700"
         }`}
       >
-        {task.completed ? "Completed ✅" : "Mark Complete"}
+        {task.status ==="completed" ? "Completed ✅" : "Mark Complete"}
       </button>
       <button
-        onClick={() => deleteTask(task.title)}
-        className="mt-4 bg-red-600 text-white px-4 py-2 rounded-xl"
-      >
-        Delete
-      </button>
-      <p className="mt-2">
+  onClick={() => {
+    const confirmDelete = window.confirm(
+      "Are you sure you want to delete this task?"
+    );
+
+    if (confirmDelete) {
+      deleteTask(task._id);
+    }
+  }}
+  className="mt-4 bg-red-600 text-white px-4 py-2 rounded-xl"
+>
+  Delete
+</button>
+      <p>
+  Status:
+  <span
+    className={
+      task.status === "Completed"
+        ? "text-green-600 font-bold"
+        : "text-yellow-600 font-bold"
+    }
+  >
+    {task.status}
+  </span>
+</p>
+      {/* <p className="mt-2">
         Status:
         {task.completed ? "Completed" : "Pending"}
-      </p>
+      </p> */}
       <button
   onClick={() => {
    

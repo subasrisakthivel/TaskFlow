@@ -10,21 +10,28 @@ import AddTask from "./pages/AddTask";
 import Summary from "./pages/Summary";
 
 function App() {
-  const [tasks, setTasks] = useState(() => {
-    const savedTasks = localStorage.getItem("tasks");
-
-    return savedTasks ? JSON.parse(savedTasks) : [];
-  });
+  const [tasks, setTasks] = useState([]);
 
   useEffect(() => {
-    localStorage.setItem("tasks", JSON.stringify(tasks));
-  }, [tasks]);
+  fetch("http://localhost:3000/api/tasks")
+    .then((res) => res.json())
+    .then((data) => {
+      setTasks(data);
+    })
+    .catch((error) => {
+      console.log(error);
+    });
+}, []);
+
+  
 
   const [editingTask, setEditingTask] = useState(null);
 
   const totalTasks = tasks.length;
-  const completedTasks = tasks.filter((task) => task.completed).length;
-  const pendingTasks = tasks.filter((task) => !task.completed).length;
+  const completedTasks = tasks.filter(
+    (task) => task.status === "Completed").length;
+  const pendingTasks = tasks.filter(
+    (task) => task.status !== "Completed").length;
 
   const highPriorityTasks = tasks.filter(
     (task) => task.priority === "high").length;
@@ -35,10 +42,21 @@ function App() {
   const lowPriorityTasks = tasks.filter(
     (task) => task.priority === "low").length;
 
-  const deleteTask = (title) => {
-    const updatedTasks = tasks.filter((newTask) => newTask.title !== title);
-    setTasks(updatedTasks);
-  };
+ const deleteTask = async (id) => {
+  try {
+    await fetch(`http://localhost:3000/api/tasks/${id}`, {
+      method: "DELETE",
+    });
+
+    setTasks((prevTasks) =>
+      prevTasks.filter((task) => task._id !== id)
+    );
+
+    alert("Task Deleted Successfully");
+  } catch (error) {
+    console.log(error);
+  }
+};
 
   const [search, setSearch] = useState("");
   const filteredTasks = tasks.filter((task) =>
@@ -52,27 +70,43 @@ function App() {
     }
 
     if (statusFilter === "completed") {
-      return task.completed;
+      return task.status === "Completed";
     }
 
     if (statusFilter === "pending") {
-      return !task.completed;
+      return task.status !== "Completed";
     }
   });
 
-  const completeTask = (title) => {
-    const markedTasks = tasks.map((newTask) => {
-      if (newTask.title === title) {
-        return {
-          ...newTask,
-          completed: true,
-        };
-      } else {
-        return newTask;
+const completeTask = async (id) => {
+  try {
+    const response = await fetch(
+      `http://localhost:3000/api/tasks/${id}`,
+      {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          status: "Completed",
+        }),
       }
-    });
-    setTasks(markedTasks);
-  };
+    );
+
+    const updatedTask = await response.json();
+
+    setTasks((prevTasks) =>
+      prevTasks.map((task) =>
+        task._id === id ? updatedTask : task
+      )
+    );
+    console.log(tasks);
+
+    alert("Task Completed ✅");
+  } catch (error) {
+    console.log(error);
+  }
+};
 
   return (
     <BrowserRouter>
